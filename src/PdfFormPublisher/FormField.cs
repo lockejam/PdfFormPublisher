@@ -14,7 +14,7 @@ internal class FormField
     public required string Name { get; init; }
     public object? Value { get; set; }
     public bool IsInitial { get; init; }
-    public string? SheetSum { get; init; }
+    public string? SumOf { get; init; }
     public string? DataFormat { get; init; }
     public bool IsLineNumber { get; init; }
     public bool IsPageNumber { get; init; }

@@ -7,12 +7,22 @@ csharp_style_prefer_primary_constructors = false:warning
 dotnet_diagnostic.IDE0063.severity = none
 dotnet_diagnostic.IDE0290.severity = warning
 
+dotnet_naming_rule.private_constants_should_be_pascal_case.symbols = private_constants
+dotnet_naming_rule.private_constants_should_be_pascal_case.style = pascal_case
+dotnet_naming_rule.private_constants_should_be_pascal_case.severity = warning
+
 dotnet_naming_rule.private_fields_should_be_prefixed_with_underscore.symbols = private_fields
 dotnet_naming_rule.private_fields_should_be_prefixed_with_underscore.style = private_field_underscore_prefix
 dotnet_naming_rule.private_fields_should_be_prefixed_with_underscore.severity = warning
 
+dotnet_naming_symbols.private_constants.applicable_kinds = field
+dotnet_naming_symbols.private_constants.applicable_accessibilities = private
+dotnet_naming_symbols.private_constants.required_modifiers = const
+
 dotnet_naming_symbols.private_fields.applicable_kinds = field
 dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+
+dotnet_naming_style.pascal_case.capitalization = pascal_case
 
 dotnet_naming_style.private_field_underscore_prefix.required_prefix = _
 dotnet_naming_style.private_field_underscore_prefix.capitalization = camel_case

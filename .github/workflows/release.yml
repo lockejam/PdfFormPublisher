@@ -1,0 +1,196 @@
+name: Release
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      package_version:
+        description: "NuGet package version to build, such as 0.1.0-alpha.1."
+        required: true
+        type: string
+      publish:
+        description: "Publish the validated package to NuGet.org."
+        required: true
+        default: false
+        type: boolean
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  DOTNET_NOLOGO: true
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    name: Build, test, pack, and smoke test
+    runs-on: windows-latest
+    outputs:
+      package_version: ${{ steps.version.outputs.package_version }}
+      publish_package: ${{ steps.publish_decision.outputs.publish_package }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Resolve package version
+        id: version
+        shell: pwsh
+        run: |
+          $eventName = "${{ github.event_name }}"
+          $refName = "${{ github.ref_name }}"
+          $inputVersion = "${{ inputs.package_version }}"
+
+          if ($eventName -eq "push") {
+              $comparison = [System.StringComparison]::OrdinalIgnoreCase
+
+              if (-not $refName.StartsWith("v", $comparison)) {
+                  throw "Release tags must start with 'v'."
+              }
+
+              $packageVersion = $refName.Substring(1)
+          } else {
+              $packageVersion = $inputVersion.Trim()
+          }
+
+          if ([string]::IsNullOrWhiteSpace($packageVersion)) {
+              throw "Package version is required."
+          }
+
+          $semVerPattern = '^\d+\.\d+\.\d+(-[0-9A-Za-z][0-9A-Za-z.-]*)?$'
+
+          if ($packageVersion -notmatch $semVerPattern) {
+              $message = "Package version '$packageVersion' must be SemVer"
+              $message += ", like 0.1.0 or 0.1.0-alpha.1."
+              throw $message
+          }
+
+          "package_version=$packageVersion" >> $env:GITHUB_OUTPUT
+
+      - name: Resolve publish decision
+        id: publish_decision
+        shell: pwsh
+        run: |
+          $eventName = "${{ github.event_name }}"
+          $manualPublish = "${{ inputs.publish }}"
+
+          if ($eventName -eq "push" -or $manualPublish -eq "true") {
+              "publish_package=true" >> $env:GITHUB_OUTPUT
+          } else {
+              "publish_package=false" >> $env:GITHUB_OUTPUT
+          }
+
+      - name: Restore
+        run: dotnet restore PdfFormPublisher.slnx
+
+      - name: Build
+        shell: pwsh
+        run: |
+          dotnet build PdfFormPublisher.slnx `
+              --configuration Release `
+              --no-restore
+
+      - name: Test
+        shell: pwsh
+        run: |
+          dotnet test PdfFormPublisher.slnx `
+              --configuration Release `
+              --no-build
+
+      - name: Pack
+        shell: pwsh
+        run: |
+          dotnet pack src/PdfFormPublisher/PdfFormPublisher.csproj `
+              --configuration Release `
+              --no-build `
+              --output artifacts/packages `
+              -p:PackageVersion=${{ steps.version.outputs.package_version }}
+
+      - name: Package smoke test
+        shell: pwsh
+        run: |
+          ./scripts/package-smoke-test.ps1 `
+              -SkipSolutionBuild `
+              -SkipPack `
+              -PackageVersion ${{ steps.version.outputs.package_version }}
+
+      - name: Upload package artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: pdf-form-publisher-release-packages
+          path: artifacts/packages/*
+          if-no-files-found: error
+
+  publish:
+    name: Publish to NuGet.org
+    needs: package
+    if: needs.package.outputs.publish_package == 'true'
+    runs-on: windows-latest
+    environment: nuget
+
+    steps:
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Download package artifacts
+        uses: actions/download-artifact@v7
+        with:
+          name: pdf-form-publisher-release-packages
+          path: artifacts/packages
+
+      - name: Publish packages
+        shell: pwsh
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:NUGET_API_KEY)) {
+              throw "NUGET_API_KEY must be configured before publishing."
+          }
+
+          $packages = Get-ChildItem `
+              -Path "artifacts/packages" `
+              -Filter "*.nupkg" `
+              -File
+
+          if (-not $packages) {
+              throw "No NuGet packages were found in artifacts/packages."
+          }
+
+          foreach ($package in $packages) {
+              dotnet nuget push $package.FullName `
+                  --api-key $env:NUGET_API_KEY `
+                  --source "https://api.nuget.org/v3/index.json" `
+                  --skip-duplicate
+
+              if ($LASTEXITCODE -ne 0) {
+                  $message = "Publishing '$($package.Name)' failed with"
+                  $message += " exit code $LASTEXITCODE."
+                  throw $message
+              }
+          }
+
+          $symbolPackages = Get-ChildItem `
+              -Path "artifacts/packages" `
+              -Filter "*.snupkg" `
+              -File
+
+          foreach ($package in $symbolPackages) {
+              dotnet nuget push $package.FullName `
+                  --api-key $env:NUGET_API_KEY `
+                  --source "https://api.nuget.org/v3/index.json" `
+                  --skip-duplicate
+
+              if ($LASTEXITCODE -ne 0) {
+                  $message = "Publishing '$($package.Name)' failed with"
+                  $message += " exit code $LASTEXITCODE."
+                  throw $message
+              }
+          }

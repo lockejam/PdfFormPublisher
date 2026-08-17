@@ -4,7 +4,7 @@ namespace PdfFormPublisher.Interfaces;
 /// Represents one row of data in a tabular PDF form.
 /// </summary>
 /// <remarks>
-/// Implement this interface on row models used by <see cref="TabularForm.Items"/>.
+/// Implement this interface on row models used by <see cref="TabularPdfForm.Items"/>.
 /// Public properties on the row model are matched to row fields in the PDF.
 /// </remarks>
 public interface IDataLine : IPdfFormPublisher

@@ -12,11 +12,11 @@ The library project is `src/PdfFormPublisher`, and the test project is `tests/Pd
 
 ## What The Tests Cover
 
-- simple `Form` publishing
+- simple `PdfForm` publishing
 - renamed fields and formatted values
 - checkbox checked and unchecked states
 - missing template and invalid configuration errors
-- `TabularForm` pagination and continuation pages
+- `TabularPdfForm` pagination and continuation pages
 - line numbering, sheet totals, page numbers, and total page count fields
 
 ## Troubleshooting

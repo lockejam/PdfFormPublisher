@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - m3-packaging-readiness
   pull_request:
     branches:
       - main
+      - m3-packaging-readiness
   workflow_dispatch:
 
 env:
@@ -15,15 +17,15 @@ env:
 
 jobs:
   build:
-    name: Build and test
+    name: Build, test, pack, and smoke test
     runs-on: windows-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10.0.x
 
@@ -35,3 +37,17 @@ jobs:
 
       - name: Test
         run: dotnet test PdfFormPublisher.slnx --configuration Release --no-build
+
+      - name: Pack
+        run: dotnet pack src/PdfFormPublisher/PdfFormPublisher.csproj --configuration Release --no-build --output artifacts/packages
+
+      - name: Package smoke test
+        shell: pwsh
+        run: ./scripts/package-smoke-test.ps1 -SkipSolutionBuild -SkipPack
+
+      - name: Upload package artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: pdf-form-publisher-packages
+          path: artifacts/packages/*
+          if-no-files-found: error

@@ -20,9 +20,9 @@ public class DataLineAttribute : Attribute
     public bool IsInitial { get; set; }
 
     /// <summary>
-    /// The row property name whose decimal values should be totaled for this field.
+    /// The row field name whose decimal values should be totaled for this field.
     /// </summary>
-    public string? SheetSum { get; set; }
+    public string? SumOf { get; set; }
 
     /// <summary>
     /// Whether PdfFormPublisher should write the current row number to this field.

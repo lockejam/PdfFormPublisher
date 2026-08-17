@@ -28,4 +28,4 @@ Package identity and versioning are documented in `docs/packaging.md`.
 ## Deferred
 
 - Future example projects should be added under `examples/` when the M5 example work begins.
-- The GitHub repository name can be decided separately from the source layout and package identity.
+- Keep the GitHub repository name aligned with the `PdfFormPublisher` package identity before release publishing.

@@ -14,7 +14,7 @@ The repository can be made public after the M2.5 public-readiness PR is merged a
 - `SECURITY.md` explains how security concerns should be reported.
 - `CONTRIBUTING.md` explains local setup, test commands, PR expectations, and style notes.
 - GitHub Actions build/test validation is configured.
-- README states that the project is not packaged on NuGet yet.
+- README states that the project is not published to a public NuGet feed yet.
 - README states that the intended NuGet package ID is `PdfFormPublisher`.
 - Repository description and topics are set in GitHub.
 - Tracked files were scanned for common secret names and generated artifact paths.

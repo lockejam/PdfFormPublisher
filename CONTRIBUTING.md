@@ -1,6 +1,6 @@
 # Contributing
 
-PdfFormPublisher is still early and is not packaged on NuGet yet. Contributions should keep the project small, focused, and easy for newer C# developers to understand.
+PdfFormPublisher is still early and is not published to a public NuGet feed yet. Contributions should keep the project small, focused, and easy for newer C# developers to understand.
 
 ## Local Setup
 

@@ -35,7 +35,7 @@ internal static class Helper
                        IsLineNumber = x.dataAttribute?.IsLineNumber ?? false,
                        IsPageNumber = x.dataAttribute?.IsPageNumber ?? false,
                        IsNumberOfPages = x.dataAttribute?.IsNumberOfPages ?? false,
-                       SheetSum = x.dataAttribute?.SheetSum
+                       SumOf = x.dataAttribute?.SumOf
                    });
     }
 

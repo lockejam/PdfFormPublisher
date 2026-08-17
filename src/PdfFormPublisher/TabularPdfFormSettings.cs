@@ -1,9 +1,9 @@
 namespace PdfFormPublisher;
 
 /// <summary>
-/// Defines the PDF templates and row counts used by a tabular form.
+/// Defines the PDF template paths and row counts used by a tabular PDF form.
 /// </summary>
-public class FormSettings
+public class TabularPdfFormSettings
 {
     /// <summary>
     /// How many item rows fit on the first page template.
@@ -19,12 +19,12 @@ public class FormSettings
     public int ContinuationPageRowCount { get; set; }
 
     /// <summary>
-    /// The file path to the PDF template used for the first page.
+    /// The file path to the PDF template used for path-based first-page publishing.
     /// </summary>
     public string? FirstPageFilePath { get; set; }
 
     /// <summary>
-    /// The file path to the PDF template used for continuation pages.
+    /// The file path to the PDF template used for path-based continuation pages.
     /// </summary>
     /// <remarks>
     /// This path is only needed when the item list can overflow the first page.

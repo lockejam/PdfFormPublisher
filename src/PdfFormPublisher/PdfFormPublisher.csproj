@@ -12,13 +12,13 @@
     <IncludeSymbols>true</IncludeSymbols>
     <PackageId>PdfFormPublisher</PackageId>
     <PackageLicenseExpression>AGPL-3.0-only</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/lockejam/FormPublisher</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/lockejam/PdfFormPublisher</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>pdf;forms;pdf-forms;acroform;itext</PackageTags>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <Nullable>enable</Nullable>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/lockejam/FormPublisher</RepositoryUrl>
+    <RepositoryUrl>https://github.com/lockejam/PdfFormPublisher</RepositoryUrl>
     <RootNamespace>PdfFormPublisher</RootNamespace>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <VersionPrefix>0.1.0</VersionPrefix>

@@ -154,9 +154,13 @@ internal static class TestPdfTemplates
     private sealed record CheckboxField(string Name, string? CheckedValue = null);
 }
 
-internal sealed class SimpleFormModel : Form
+internal sealed class SimplePdfFormModel : PdfForm
 {
-    public SimpleFormModel(string filePath)
+    public SimplePdfFormModel()
+    {
+    }
+
+    public SimplePdfFormModel(string filePath)
         : base(filePath)
     {
     }
@@ -172,9 +176,9 @@ internal sealed class SimpleFormModel : Form
     public string[] Choice { get; init; } = [];
 }
 
-internal sealed class CheckboxFormModel : Form
+internal sealed class CheckboxPdfFormModel : PdfForm
 {
-    public CheckboxFormModel(string filePath)
+    public CheckboxPdfFormModel(string filePath)
         : base(filePath)
     {
     }
@@ -186,9 +190,9 @@ internal sealed class CheckboxFormModel : Form
     public bool DefaultUnchecked { get; init; }
 }
 
-internal sealed class TestInventoryForm : TabularForm
+internal sealed class TestInventoryPdfForm : TabularPdfForm
 {
-    public TestInventoryForm(FormSettings settings)
+    public TestInventoryPdfForm(TabularPdfFormSettings settings)
         : base(settings)
     {
     }
@@ -196,7 +200,7 @@ internal sealed class TestInventoryForm : TabularForm
     [DataLine(IsInitial = true)]
     public string Title { get; init; } = string.Empty;
 
-    [DataLine(SheetSum = nameof(TestInventoryLine.Cost))]
+    [DataLine(SumOf = nameof(TestInventoryLine.Cost))]
     [FormField(DataFormat = "0.00")]
     public decimal SheetTotal { get; init; }
 
