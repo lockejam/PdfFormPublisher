@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - main
-      - m3-packaging-readiness
+      - m4-advanced-pdf-workflow
   pull_request:
     branches:
       - main
-      - m3-packaging-readiness
+      - m4-advanced-pdf-workflow
   workflow_dispatch:
 
 env:
