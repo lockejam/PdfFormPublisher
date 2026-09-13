@@ -270,9 +270,12 @@ form.Publish(firstPageTemplateStream, continuationTemplateStream, outputStream);
 
 PdfFormPublisher is being modernized in small milestones. This README describes how the library works today.
 
+M3 packaging and release readiness is complete, including package metadata,
+CI package artifacts, consumer smoke testing, and release publishing automation.
+The package is not published to a public NuGet feed yet.
+
 Planned follow-up work includes:
 
-- NuGet packaging and release readiness
 - advanced PDF workflow support, including better field diagnostics and template inspection
 - runnable example projects, including a basic form example and a DD Form 1149 tabular form example
 - signature support, followed by a DD Form 2875 signature workflow example
@@ -380,8 +383,8 @@ Repository layout decisions are documented in [docs/repository-layout.md](docs/r
 
 ```powershell
 dotnet restore PdfFormPublisher.slnx
-dotnet build PdfFormPublisher.slnx
-dotnet test PdfFormPublisher.slnx
+dotnet build PdfFormPublisher.slnx --configuration Release --no-restore
+dotnet test PdfFormPublisher.slnx --configuration Release --no-build
 dotnet pack src\PdfFormPublisher\PdfFormPublisher.csproj --configuration Release --no-build --output artifacts\packages
 .\scripts\package-smoke-test.ps1 -SkipSolutionBuild -SkipPack
 ```
