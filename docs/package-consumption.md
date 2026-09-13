@@ -75,6 +75,10 @@ using PdfFormPublisher.Attributes;
 
 public sealed class SupplyRequestForm : PdfForm
 {
+    public SupplyRequestForm()
+    {
+    }
+
     public SupplyRequestForm(string templatePath)
         : base(templatePath)
     {
