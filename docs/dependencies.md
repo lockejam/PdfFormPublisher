@@ -15,6 +15,11 @@ The repository license does not remove the need to understand the licenses of it
 
 `ClosedXML` was removed because the repository does not currently contain any code paths that read or write Excel files.
 
+## Build dependency
+
+- `Microsoft.SourceLink.GitHub` `10.0.401` provides source metadata for package debugging.
+  It is a private build dependency (`PrivateAssets="All"`).
+
 ## iText strategy
 
 `PdfFormPublisher` currently uses `itext` `9.6.0` with `itext.bouncy-castle-adapter` `9.6.0`.
@@ -39,7 +44,7 @@ Before shipping NuGet packages or signature examples, confirm that the intended 
 
 References:
 
-- NuGet Gallery for `itext`: https://www.nuget.org/packages/itext/9.6.0
-- NuGet Gallery for `itext.bouncy-castle-adapter`: https://www.nuget.org/packages/itext.bouncy-castle-adapter/9.6.0
-- iText AGPL licensing overview: https://itextpdf.com/how-buy/AGPLv3-license
-- iText licensing overview: https://itextpdf.com/how-buy
+- NuGet Gallery for `itext`: [https://www.nuget.org/packages/itext/9.6.0](https://www.nuget.org/packages/itext/9.6.0)
+- NuGet Gallery for `itext.bouncy-castle-adapter`: [https://www.nuget.org/packages/itext.bouncy-castle-adapter/9.6.0](https://www.nuget.org/packages/itext.bouncy-castle-adapter/9.6.0)
+- iText AGPL licensing overview: [https://itextpdf.com/how-buy/AGPLv3-license](https://itextpdf.com/how-buy/AGPLv3-license)
+- iText licensing overview: [https://itextpdf.com/how-buy](https://itextpdf.com/how-buy)
