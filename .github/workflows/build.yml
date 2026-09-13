@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - main
-      - m4-advanced-pdf-workflow
   pull_request:
     branches:
       - main
-      - m4-advanced-pdf-workflow
   workflow_dispatch:
 
 env:
